@@ -45,7 +45,9 @@ def get_input():
             print(f"Invalid input: {e}, please enter a valid month")
     while True:
         try:
-            income = input("Please enter your monthly income")
+            income = float(input("Please enter your monthly income: "))
+            if income <=0:
+                raise ValueError("Income must be greater than zero.")
             break
         except ValueError as e:
             print(f"Invalid input: {e}, please enter another one")
