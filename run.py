@@ -13,7 +13,33 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('money-monitor')
 
-first_rule=SHEET.worksheet('50-30-20')
-data = first_rule.get_all_values()
+def get_input():
+    """
+     Get monthly income, year, and month input from the user"""
+    while True:
+        try:
+            year = input("Please enter the year:")
+            break
+        except ValueError as e:
+            print(f"Invalit input: {e}, enter another one")
+    
+    while True:
+        try:
+            month = input("Please enter the month")
+            break
+        except ValueError as e:
+            print(f"Invalid input: {e}, please enter another one")
+    while True:
+        try:
+            income = input("Please enter your monthly income")
+            break
+        except ValueError as e:
+            print(f"Invalid input: {e}, please enter another one")
+    return year, month, income
 
-print(data)
+def main():
+    """Run all program functions"""
+    data = get_input()
+    print(data)
+
+main()
