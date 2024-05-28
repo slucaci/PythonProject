@@ -22,8 +22,18 @@ MONTHS = {
 }
 
 class MoneyMonitor:
+
+
     def __init__(self):
         self.setup_worksheets()
+        self.money_rules = {
+            '50-30-20': {'needs': 0.50, 'wants': 0.30, 'savings': 0.20},
+            '75-15-10': {'needs': 0.75, 'wants': 0.10, 'savings': 0.15},
+            '80-20': {'needs': 0.80, 'wants': 0.00, 'savings': 0.20},
+            '60-20-20': {'needs': 0.60, 'wants': 0.20, 'savings': 0.20},
+            '70-20-10': {'needs': 0.70, 'wants': 0.20, 'savings': 0.10},
+            '60-30-10': {'needs': 0.60, 'wants': 0.30, 'savings': 0.10}
+        }
 
     def setup_worksheets(self):
         """
@@ -42,9 +52,14 @@ class MoneyMonitor:
                 worksheet = SHEET.add_worksheet(title=sheet_name, rows=100, cols=20)
                 worksheet.append_row(headers)
                 print(f"Worksheet {sheet_name} created and headers added")
+
+
     def get_input(self):
         """
         Get monthly income, year, and month input from the user.
+          Run the while loop to collect a valid year, 
+          a valid income(which should be greater than 0) 
+          and a valid month.
         """
         while True:
             try:
@@ -70,14 +85,29 @@ class MoneyMonitor:
                     raise ValueError("Income must be greater than zero.")
                 break
             except ValueError as e:
-                print(f"Invalid input: {e}, please enter another one")
+                print(f"Invalid input: {e}, please enter a positive number.")
         return year, month, income
+    
 
+    def calculate_rule(self, income, rule):
+        """
+        Calculate the amount of money alocation based on each rule.
+        """
+        needs = income * rule['needs']
+        wants = income * rule['wants']
+        savings = income * rule['savings']
+        return [income, needs, wants, savings]
+        
+    
     def main(self):
         """Run all program functions"""
-        data = self.get_input()
-        print(data)
-
+        year, month, income = self.get_input()
+        # Calculate the amount of money for all rules.
+        money_test=[]
+        for money_rule, rule in self.money_rules.items():
+            money = self.calculate_rule(income, rule)
+            money_test.append(money)
+        print(money_test)
 print("Welcome to Money Monitor Data Automation.")
 money_monitor = MoneyMonitor()
 money_monitor.main()
