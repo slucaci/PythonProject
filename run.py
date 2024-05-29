@@ -97,7 +97,17 @@ class MoneyMonitor:
         wants = income * rule['wants']
         savings = income * rule['savings']
         return [income, needs, wants, savings]
-
+    
+    def update_worksheet(self, data, worksheet_name):
+        """
+        Recieves a list of integers to be inserted into a worksheet
+        Update the relevant worksheet with the data provided
+        """
+        print(f"Updating {worksheet_name} worksheet...\n")
+        worksheet_to_update = SHEET.worksheet(worksheet_name)
+        worksheet_to_update.append_row(data)
+        print(f"{worksheet_name} worksheet updated succesfully\n")
+        
     def main(self):
         """Run all program functions"""
         print("Welcome to Money Monitor Data Automation.")
