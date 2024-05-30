@@ -19,6 +19,7 @@ MONTHS = {
     "september": 9, "october": 10, "november": 11, "december": 12
 }
 
+
 class MoneyMonitor:
     def __init__(self):
         self.setup_worksheets()
@@ -71,7 +72,8 @@ class MoneyMonitor:
                     ("Year must be between 2000 and the current year.")
                 break
             except ValueError as e:
-                print(f"Invalid input: {e}, please enter a number between 2000 and the current year.  \n")
+                print(f"Invalid input: {e}, please enter a number
+                      between 2000 and the current year.  \n")
         while True:
             try:
                 month = input("Please enter the month(e.g.,"
@@ -86,7 +88,7 @@ class MoneyMonitor:
             try:
                 income = input("Please enter your monthly income:\n")
                 # Checks if the user types an empty input
-                if income=="":
+                if income == "":
                     raise ValueError("Cannot be left blank")
                 income = float(income)
                 # Checks if the user types anegative input
@@ -94,7 +96,8 @@ class MoneyMonitor:
                     raise ValueError("Income must be greater than zero")
                 break
             except ValueError as e:
-                print(f"Invalid input: {e}, please enter a positive number. \n")
+                print(f"Invalid input: {e}, please
+                      enter a positive number. \n")
         return year, month.capitalize(), income
 
     def calculate_rule(self, income, rule):
@@ -105,23 +108,23 @@ class MoneyMonitor:
         wants = income * rule['wants']
         savings = income * rule['savings']
         return [income, needs, wants, savings]
-    
+
     def update_worksheet(self, data, worksheet_name):
         """
         Receives a list of integers to be inserted into a worksheet
         Update the relevant worksheet with the data provided
         """
-        
+
         worksheet_to_update = SHEET.worksheet(worksheet_name)
         # Gets all the values from the worksheet
         year_month_already = worksheet_to_update.get_all_values()
         year = str(data[0])
         month = data[1].lower()
         data_check = False
-        # Check if the data is already in the worksheet file, if it is, a message will be displayed
+        """Check if the data is already in the worksheet file,
+        if it is, a message will be displayed"""
         for worksheet in year_month_already:
-            if worksheet[0] == year and worksheet[1].lower()==month:
-                
+            if worksheet[0] == year and worksheet[1].lower() == month:
                 data_check = True
                 break
         if not data_check:
@@ -155,5 +158,7 @@ class MoneyMonitor:
         if not data_updated:
             print(f"Budget rules for {year} and {month} already exist.\n")
             return
+
+
 money_monitor = MoneyMonitor()
 money_monitor.main()
