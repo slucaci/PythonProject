@@ -61,7 +61,7 @@ class MoneyMonitor:
         """
         while True:
             try:
-                year = input("Please enter the year(e.g. 2024): ").strip()
+                year = input("Please enter the year(e.g. 2024):\n").strip()
                 # Checks if the user types an empty input
                 if len(year) == 0:
                     raise ValueError("You must enter a valid year")
@@ -75,7 +75,7 @@ class MoneyMonitor:
         while True:
             try:
                 month = input("Please enter the month(e.g.,"
-                              "January, February): ").strip().lower()
+                              "January, February):\n").strip().lower()
                 if month not in MONTHS:
                     raise ValueError("Month must be a valid month name")
                 break
@@ -84,7 +84,7 @@ class MoneyMonitor:
 
         while True:
             try:
-                income = input("Please enter your monthly income: ")
+                income = input("Please enter your monthly income:\n")
                 # Checks if the user types an empty input
                 if income=="":
                     raise ValueError("Cannot be left blank")
