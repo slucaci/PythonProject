@@ -72,8 +72,8 @@ class MoneyMonitor:
                     ("Year must be between 2000 and the current year.")
                 break
             except ValueError as e:
-                print(f"Invalid input: {e}, please enter a number
-                      between 2000 and the current year.  \n")
+                print(f"Invalid input: {e}, please enter a number"
+                      "between 2000 and the current year.  \n")
         while True:
             try:
                 month = input("Please enter the month(e.g.,"
@@ -96,8 +96,8 @@ class MoneyMonitor:
                     raise ValueError("Income must be greater than zero")
                 break
             except ValueError as e:
-                print(f"Invalid input: {e}, please
-                      enter a positive number. \n")
+                print(f"Invalid input: {e}, "
+                      "please enter a positive number. \n")
         return year, month.capitalize(), income
 
     def calculate_rule(self, income, rule):
