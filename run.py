@@ -46,12 +46,12 @@ class MoneyMonitor:
                 worksheet = SHEET.worksheet(sheet_name)
                 if len(worksheet.get_all_values()) == 0:
                     worksheet.append_row(headers)
-                    print(f"Headers added to {sheet_name} worksheet")
+                    print(f"Headers added to {sheet_name} worksheet. \n")
             except gspread.exceptions.WorksheetNotFound:
                 worksheet = SHEET.add_worksheet(title=sheet_name,
                                                 rows=100, cols=20)
                 worksheet.append_row(headers)
-                print(f"Worksheet {sheet_name} created and headers added")
+                print(f"Worksheet {sheet_name} created and headers added. \n")
 
     def get_input(self):
         """
@@ -62,31 +62,37 @@ class MoneyMonitor:
         """
         while True:
             try:
-                year = int(input("Please enter the year(e.g. 2024): "))
+                year = input("Please enter the year(e.g. 2024): ").strip()
+                if len(year) == 0:
+                    raise ValueError("You must enter a valid year")
+                year = int(year)
                 if year < 2000 or year > datetime.now().year:
                     raise ValueError
                     ("Year must be between 2000 and the current year.")
                 break
             except ValueError as e:
-                print(f"Invalid input: {e}, please enter a valid year")
+                print(f"Invalid input: {e}, please enter a number between 2000 and the current year.  \n")
         while True:
             try:
                 month = input("Please enter the month(e.g.,"
                               "January, February): ").strip().lower()
                 if month not in MONTHS:
-                    raise ValueError("Month must be a valid month name.")
+                    raise ValueError("Month must be a valid month name")
                 break
             except ValueError as e:
-                print(f"Invalid input: {e}, please enter a valid month")
+                print(f"Invalid input: {e}, please enter a valid month. \n")
 
         while True:
             try:
-                income = float(input("Please enter your monthly income: "))
+                income = input("Please enter your monthly income: ")
+                if income=="":
+                    raise ValueError("Cannot be left blank")
+                income = float(income)
                 if income <= 0:
-                    raise ValueError("Income must be greater than zero.")
+                    raise ValueError("Income must be greater than zero")
                 break
             except ValueError as e:
-                print(f"Invalid input: {e}, please enter a positive number.")
+                print(f"Invalid input: {e}, please enter a positive number. \n")
         return year, month, income
 
     def calculate_rule(self, income, rule):
@@ -103,23 +109,30 @@ class MoneyMonitor:
         Recieves a list of integers to be inserted into a worksheet
         Update the relevant worksheet with the data provided
         """
-        print(f"Updating {worksheet_name} worksheet...\n")
+        print(f"Updating {worksheet_name} worksheet... \n")
         worksheet_to_update = SHEET.worksheet(worksheet_name)
         worksheet_to_update.append_row(data)
-        print(f"{worksheet_name} worksheet updated succesfully\n")
-        
+        print(f"{worksheet_name} worksheet updated succesfully. \n")
+
+    def update_categories(self, year, month, income, rule_name, rule):
+        """
+        Update the amount of money in the corresponding rule worksheet.
+        """
+        needs = income * rule['needs']
+        wants = income * rule['wants']
+        savings = income * rule['savings']
+        data = [year, month, income, needs, wants, savings]
+        self.update_worksheet(data, rule_name)
+
     def main(self):
         """Run all program functions"""
-        print("Welcome to Money Monitor Data Automation.")
+        print("Welcome to Money Monitor Data Automation. \n")
         year, month, income = self.get_input()
         # Calculate the amount of money for all rules.
-        # Test List
-        money_test = []
         for money_rule, rule in self.money_rules.items():
             money = self.calculate_rule(income, rule)
-            money_test.append(money)
-        print(money_test)
-
+            row_money = [year, month] + [money_rule]
+            self.update_categories(year, month, income, money_rule, rule)
 
 money_monitor = MoneyMonitor()
 money_monitor.main()
