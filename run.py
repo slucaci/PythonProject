@@ -95,7 +95,7 @@ class MoneyMonitor:
                 break
             except ValueError as e:
                 print(f"Invalid input: {e}, please enter a positive number. \n")
-        return year, month, income
+        return year, month.capitalize(), income
 
     def calculate_rule(self, income, rule):
         """
