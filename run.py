@@ -71,6 +71,7 @@ class MoneyMonitor:
                     raise ValueError
                     ("Year must be between 2000 and the current year.")
                 break
+            # prints a message for invalid number
             except ValueError as e:
                 print(f"Invalid input: {e}, please enter a number"
                       "between 2000 and the current year.  \n")
@@ -78,9 +79,11 @@ class MoneyMonitor:
             try:
                 month = input("Please enter the month(e.g.,"
                               "January, February):\n").strip().lower()
+                # Checks if the user types a valid month
                 if month not in MONTHS:
                     raise ValueError("Month must be a valid month name")
                 break
+            # prints a message for invalid month
             except ValueError as e:
                 print(f"Invalid input: {e}, please enter a valid month. \n")
 
@@ -91,10 +94,11 @@ class MoneyMonitor:
                 if income == "":
                     raise ValueError("Cannot be left blank")
                 income = float(income)
-                # Checks if the user types anegative input
+                # Checks if the user types a negative input
                 if income <= 0:
                     raise ValueError("Income must be greater than zero")
                 break
+            # prints a message for invalid number
             except ValueError as e:
                 print(f"Invalid input: {e}, "
                       "please enter a positive number. \n")
