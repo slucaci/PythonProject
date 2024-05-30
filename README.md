@@ -80,6 +80,9 @@ Visit the site deployed on heroku: [MoneyMonitor](https://moneymonitor-c73e0918c
 3. Worksheets 
     - Initially, there was a bug where the program did not created the worksheets if they didn't exist
     - To solve this bug, I created a function to check and create the worksheets.
+4. Month input(Uppercase or lowercase)
+    - Initially, there was a bug where the program raised an error even if the user types the month with lowercase
+    - To solve this bug, I used the lower() functinon. It alows the user to input a month in any case.
 
 ### Remaining Bugs
 

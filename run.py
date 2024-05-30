@@ -74,7 +74,7 @@ class MoneyMonitor:
             # prints a message for invalid number
             except ValueError as e:
                 print(f"Invalid input: {e}, please enter a number"
-                      "between 2000 and the current year.  \n")
+                      " between 2000 and the current year.  \n")
         while True:
             try:
                 month = input("Please enter the month(e.g.,"
