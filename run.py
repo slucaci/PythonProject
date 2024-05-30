@@ -111,7 +111,7 @@ class MoneyMonitor:
         Receives a list of integers to be inserted into a worksheet
         Update the relevant worksheet with the data provided
         """
-        print(f"Updating {worksheet_name} worksheet... \n")
+        
         worksheet_to_update = SHEET.worksheet(worksheet_name)
         # Gets all the values from the worksheet
         year_month_already = worksheet_to_update.get_all_values()
@@ -121,12 +121,15 @@ class MoneyMonitor:
         # Check if the data is already in the worksheet file, if it is, a message will be displayed
         for worksheet in year_month_already:
             if worksheet[0] == year and worksheet[1].lower()==month:
+                
                 data_check = True
                 break
-        if data_check==False:
+        if not data_check:
+            print(f"Updating {worksheet_name} worksheet... \n")
             worksheet_to_update.append_row(data)
             print(f"{worksheet_name} worksheet updated successfully. \n")
-
+            return True
+        return False
 
     def update_categories(self, year, month, income, rule_name, rule):
         """
@@ -143,17 +146,14 @@ class MoneyMonitor:
         print("Welcome to Money Monitor Data Automation. \n")
         year, month, income = self.get_input()
         # Calculate the amount of money for all rules.
+        data_updated = False
         for money_rule, rule in self.money_rules.items():
             money = self.calculate_rule(income, rule)
             row_money = [year, month] + [money_rule]
-            self.update_categories(year, month, income, money_rule, rule)
-            # Check if the data already exists for any rule
-            worksheet_to_check = SHEET.worksheet(money_rule)
-            year_month_already = worksheet_to_check.get_all_values()
-            for worksheet in year_month_already:
-                if worksheet[0] == str(year) and worksheet[1].lower() == month:
-                    print(f"Budget rules for {year} and {month} already exists.\n")
-                    return 
-
+            if self.update_categories(year, month, income, money_rule, rule):
+                data_updated = True
+        if not data_updated:
+            print(f"Budget rules for {year} and {month} already exist.\n")
+            return
 money_monitor = MoneyMonitor()
 money_monitor.main()
