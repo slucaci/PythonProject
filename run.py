@@ -19,7 +19,6 @@ MONTHS = {
     "september": 9, "october": 10, "november": 11, "december": 12
 }
 
-
 class MoneyMonitor:
     def __init__(self):
         self.setup_worksheets()
@@ -63,6 +62,7 @@ class MoneyMonitor:
         while True:
             try:
                 year = input("Please enter the year(e.g. 2024): ").strip()
+                # Checks if the user types an empty input
                 if len(year) == 0:
                     raise ValueError("You must enter a valid year")
                 year = int(year)
@@ -85,9 +85,11 @@ class MoneyMonitor:
         while True:
             try:
                 income = input("Please enter your monthly income: ")
+                # Checks if the user types an empty input
                 if income=="":
                     raise ValueError("Cannot be left blank")
                 income = float(income)
+                # Checks if the user types anegative input
                 if income <= 0:
                     raise ValueError("Income must be greater than zero")
                 break
@@ -106,13 +108,25 @@ class MoneyMonitor:
     
     def update_worksheet(self, data, worksheet_name):
         """
-        Recieves a list of integers to be inserted into a worksheet
+        Receives a list of integers to be inserted into a worksheet
         Update the relevant worksheet with the data provided
         """
         print(f"Updating {worksheet_name} worksheet... \n")
         worksheet_to_update = SHEET.worksheet(worksheet_name)
-        worksheet_to_update.append_row(data)
-        print(f"{worksheet_name} worksheet updated succesfully. \n")
+        # Gets all the values from the worksheet
+        year_month_already = worksheet_to_update.get_all_values()
+        year = str(data[0])
+        month = data[1].lower()
+        data_check = False
+        # Check if the data is already in the worksheet file, if it is, a message will be displayed
+        for worksheet in year_month_already:
+            if worksheet[0] == year and worksheet[1].lower()==month:
+                data_check = True
+                break
+        if data_check==False:
+            worksheet_to_update.append_row(data)
+            print(f"{worksheet_name} worksheet updated successfully. \n")
+
 
     def update_categories(self, year, month, income, rule_name, rule):
         """
@@ -133,6 +147,13 @@ class MoneyMonitor:
             money = self.calculate_rule(income, rule)
             row_money = [year, month] + [money_rule]
             self.update_categories(year, month, income, money_rule, rule)
+            # Check if the data already exists for any rule
+            worksheet_to_check = SHEET.worksheet(money_rule)
+            year_month_already = worksheet_to_check.get_all_values()
+            for worksheet in year_month_already:
+                if worksheet[0] == str(year) and worksheet[1].lower() == month:
+                    print(f"Budget rules for {year} and {month} already exists.\n")
+                    return 
 
 money_monitor = MoneyMonitor()
 money_monitor.main()
